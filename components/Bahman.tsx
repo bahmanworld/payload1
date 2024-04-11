@@ -1,8 +1,6 @@
 'use client'
 import React from 'react'
 import { useField } from '@payloadcms/ui/forms/useField'
-import { Button, TextField } from '@mui/material'
-import { Unstable_NumberInput as NumberInput } from '@mui/base'
 
 type ValueProps = {
   name: string
@@ -12,42 +10,30 @@ type ValueProps = {
 function Bahman() {
   const { value, setValue } = useField<ValueProps>({})
   const inputRef = React.useRef<HTMLInputElement>(null)
-  const [name, setName] = React.useState(value.name || '')
-  const [age, setAge] = React.useState(value.age + '' || '0')
 
   return (
     <div>
       <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', gap: 10 }}>
-        <TextField
-          label="Name"
-          ref={inputRef}
-          value={name}
-          sx={{ flex: 1 }}
-          onChange={(e) => {
-            setName(e.target.value)
-            setValue({ ...value, name: e.target.value } as ValueProps)
-          }}
-        />
-        <NumberInput
-          value={+age}
-          onChange={(e,val) => {
-            setAge(''+val)
-            setValue({ ...value, age: val } as ValueProps)
-          }}
-        />
-        <Button
-          variant="contained"
-          tabIndex={0}
-          style={{ marginTop: 25 }}
-          type="button"
-          onClick={() => {
-            setName('')
-            setAge('')
-            inputRef.current?.focus()
-          }}
-        >
-          Use Default Values
-        </Button>
+        <div className="field-type number" style={{ flex: 1 }}>
+          <input
+            ref={inputRef}
+            value={value.name}
+            onChange={(e) => {
+              setValue({ ...value, name: e.target.value } as ValueProps)
+            }}
+          />
+        </div>
+        <div className="field-type number" style={{ flex: 1 }}>
+          <input
+            value={value.age}
+            type="number"
+            min={10}
+            max={100}
+            onChange={(e) => {
+              setValue({ ...value, age: parseInt(e.target.value) } as ValueProps)
+            }}
+          />
+        </div>
       </div>
     </div>
   )
